@@ -1,3 +1,16 @@
-echo "POLECENIE: cat baza.rds | redis-cli -n 1"
+echo "POLECENIE: cat baza.rds | redis-cli -n 1 -h m89.eu -p 6379"
 
+SET uzytkownik:1:imie Adam
+SET uzytkownik:1:nazwisko Kowal
+SET uzytkownik:1:miejscowosc Żarki
+SET uzytkownik:1:adres "Strażacka 2"
 
+SET uzytkownik:2:imie Jan
+SET uzytkownik:2:nazwisko Nowak
+SET uzytkownik:2:miejscowosc Myszków
+SET uzytkownik:2:adres "Sikorskiego 44/5"
+
+SET uzytkownik:3:imie Franek
+SET uzytkownik:3:nazwisko Kimono
+SET uzytkownik:3:miejscowosc Zabłotnice
+SET uzytkownik:3:adres "Francuska 76"
