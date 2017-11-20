@@ -1,0 +1,3 @@
+echo "POLECENIE: cat baza.rds | redis-cli -n 1"
+
+
