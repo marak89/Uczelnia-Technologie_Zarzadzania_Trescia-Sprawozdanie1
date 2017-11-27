@@ -14,3 +14,5 @@ SET uzytkownik:3:imie Franek
 SET uzytkownik:3:nazwisko Kimono
 SET uzytkownik:3:miejscowosc Zabłotnice
 SET uzytkownik:3:adres "Francuska 76"
+
+
