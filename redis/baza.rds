@@ -1,18 +1,164 @@
 echo "POLECENIE: cat baza.rds | redis-cli -n 1 -h m89.eu -p 6379"
-
-SET uzytkownik:1:imie Adam
-SET uzytkownik:1:nazwisko Kowal
-SET uzytkownik:1:miejscowosc Żarki
-SET uzytkownik:1:adres "Strażacka 2"
-
-SET uzytkownik:2:imie Jan
-SET uzytkownik:2:nazwisko Nowak
-SET uzytkownik:2:miejscowosc Myszków
-SET uzytkownik:2:adres "Sikorskiego 44/5"
-
-SET uzytkownik:3:imie Franek
-SET uzytkownik:3:nazwisko Kimono
-SET uzytkownik:3:miejscowosc Zabłotnice
-SET uzytkownik:3:adres "Francuska 76"
-
-
+echo "IMIONA - STRING"
+SET pracownik:1:imie Adam
+SET pracownik:2:imie Jan
+SET pracownik:3:imie Franek
+SET pracownik:4:imie Elżbieta
+SET pracownik:5:imie Małgorzata
+SET pracownik:6:imie Ewelina
+SET pracownik:7:imie Robert
+SET pracownik:8:imie Emanuel
+SET pracownik:9:imie Eryk
+SET pracownik:10:imie Andrzej
+echo "NAZWISKA - STRING"
+SET pracownik:1:nazwisko Kowal
+SET pracownik:2:nazwisko Nowak
+SET pracownik:3:nazwisko Złotnicki
+SET pracownik:4:nazwisko Francuska
+SET pracownik:5:nazwisko Srebrnicki
+SET pracownik:6:nazwisko Kolanko
+SET pracownik:7:nazwisko Wichura
+SET pracownik:8:nazwisko Noworycerz
+SET pracownik:9:nazwisko Mikolas
+SET pracownik:10:nazwisko Teraziński
+echo "MIEJSCOWOSCI - STRING"
+SET pracownik:1:miejscowosc Żarki
+SET pracownik:2:miejscowosc Myszków
+SET pracownik:3:miejscowosc Zabłotnice
+SET pracownik:3:miejscowosc Końskie
+SET pracownik:4:miejscowosc Radzyń
+SET pracownik:5:miejscowosc Bądze
+SET pracownik:6:miejscowosc Bobrowniki
+SET pracownik:7:miejscowosc Łąki
+SET pracownik:8:miejscowosc Skarszewy
+SET pracownik:9:miejscowosc Groń
+SET pracownik:10:miejscowosc Wieruszów
+echo "ADRESY - STRING"
+SET pracownik:1:adres "Strażacka 2"
+SET pracownik:2:adres "Sikorskiego 44/5"
+SET pracownik:3:adres "Mokra 76"
+SET pracownik:4:adres "Słoneczna 24"
+SET pracownik:5:adres "Stolicy  65"
+SET pracownik:6:adres "PCK 4"
+SET pracownik:7:adres "Szklana 11"
+SET pracownik:8:adres "Telewizyjna 76"
+SET pracownik:9:adres "Ciemna 22"
+SET pracownik:10:adres "Widna 12"
+echo "DZIALY FIRMY - STRING"
+SET dzial:1:nazwa Managment
+SET dzial:2:nazwa "research and development"
+SET dzial:3:nazwa "accounting department"
+SET dzial:4:nazwa "programming department"
+SET dzial:5:nazwa "problem solving"
+SET dzial:6:nazwa "Cleaning"
+echo "OPISY DZIALOW - STRING"
+SET dzial:1:opis "Dział prezesów"
+SET dzial:2:opis "Poszukiwacze przyszłości"
+SET dzial:3:opis "Bierzące finanse"
+SET dzial:4:opis "Wytwórcy "
+SET dzial:5:opis "Naprawa popsutości"
+SET dzial:6:opis "Naprawa brudności"
+echo "GODZINY PRACY DZIALOW - LISTY"
+RPUSH dzial:1:godziny "10:00"
+RPUSH dzial:1:godziny "13:00"
+RPUSH dzial:2:godziny "08:00"
+RPUSH dzial:2:godziny "16:00"
+RPUSH dzial:3:godziny "07:00"
+RPUSH dzial:3:godziny "15:00"
+RPUSH dzial:4:godziny "07:00"
+RPUSH dzial:4:godziny "20:00"
+RPUSH dzial:5:godziny "7:00"
+RPUSH dzial:5:godziny "20:00"
+RPUSH dzial:6:godziny "18:00"
+RPUSH dzial:6:godziny "22:00"
+echo "LISTY OBECNOSCI - TABLICE ASOCJACYJNE"
+HSET listaObecnosci:2:in  "2017-11-01" "08:00"
+HSET listaObecnosci:2:out "2017-11-01" "16:00"
+HSET listaObecnosci:2:in  "2017-11-02" "08:00"
+HSET listaObecnosci:2:out "2017-11-02" "16:00"
+HSET listaObecnosci:2:in  "2017-11-03" "08:00"
+HSET listaObecnosci:2:out "2017-11-03" "16:00"
+HSET listaObecnosci:2:in  "2017-11-04" "08:00"
+HSET listaObecnosci:2:out "2017-11-04" "16:00"
+HSET listaObecnosci:2:in  "2017-11-05" "08:00"
+HSET listaObecnosci:2:out "2017-11-05" "16:00"
+HSET listaObecnosci:2:in  "2017-11-06" "08:00"
+HSET listaObecnosci:2:out "2017-11-06" "16:00"
+HSET listaObecnosci:2:in  "2017-11-07" "08:00"
+HSET listaObecnosci:2:out "2017-11-07" "16:00"
+HSET listaObecnosci:1:in  "2017-11-01" "07:00"
+HSET listaObecnosci:1:out "2017-11-01" "15:00"
+HSET listaObecnosci:1:in  "2017-11-02" "07:00"
+HSET listaObecnosci:1:out "2017-11-02" "15:00"
+HSET listaObecnosci:1:in  "2017-11-03" "07:00"
+HSET listaObecnosci:1:out "2017-11-03" "15:00"
+HSET listaObecnosci:1:in  "2017-11-04" "07:00"
+HSET listaObecnosci:1:out "2017-11-04" "15:00"
+HSET listaObecnosci:1:in  "2017-11-05" "07:00"
+HSET listaObecnosci:1:out "2017-11-05" "15:00"
+HSET listaObecnosci:1:in  "2017-11-06" "07:00"
+HSET listaObecnosci:1:out "2017-11-06" "15:00"
+HSET listaObecnosci:1:in  "2017-11-07" "07:00"
+HSET listaObecnosci:1:out "2017-11-07" "15:00"
+HSET listaObecnosci:3:in  "2017-11-01" "08:30"
+HSET listaObecnosci:3:out "2017-11-01" "16:30"
+HSET listaObecnosci:3:in  "2017-11-02" "08:30"
+HSET listaObecnosci:3:out "2017-11-02" "16:30"
+HSET listaObecnosci:3:in  "2017-11-03" "08:30"
+HSET listaObecnosci:3:out "2017-11-03" "16:30"
+HSET listaObecnosci:3:in  "2017-11-04" "08:30"
+HSET listaObecnosci:3:out "2017-11-04" "16:30"
+HSET listaObecnosci:3:in  "2017-11-05" "08:30"
+HSET listaObecnosci:3:out "2017-11-05" "16:30"
+HSET listaObecnosci:3:in  "2017-11-06" "08:30"
+HSET listaObecnosci:3:out "2017-11-06" "16:30"
+HSET listaObecnosci:3:in  "2017-11-07" "08:30"
+HSET listaObecnosci:3:out "2017-11-07" "16:30"
+HSET listaObecnosci:4:in  "2017-11-01" "06:30"
+HSET listaObecnosci:4:out "2017-11-01" "14:30"
+HSET listaObecnosci:4:in  "2017-11-02" "06:30"
+HSET listaObecnosci:4:out "2017-11-02" "14:30"
+HSET listaObecnosci:4:in  "2017-11-03" "06:30"
+HSET listaObecnosci:4:out "2017-11-03" "14:30"
+HSET listaObecnosci:4:in  "2017-11-04" "06:30"
+HSET listaObecnosci:4:out "2017-11-04" "14:30"
+HSET listaObecnosci:4:in  "2017-11-05" "06:30"
+HSET listaObecnosci:4:out "2017-11-05" "14:30"
+HSET listaObecnosci:4:in  "2017-11-06" "06:30"
+HSET listaObecnosci:4:out "2017-11-06" "14:30"
+HSET listaObecnosci:4:in  "2017-11-07" "06:30"
+HSET listaObecnosci:4:out "2017-11-07" "14:30"
+echo "ZADANIA DZIALOW - ZBIORY"
+SADD dzial:1:zajecia "zarządzanie"
+SADD dzial:1:zajecia "podejmowanie decyzjie"
+SADD dzial:1:zajecia "branie odpowiedzialności"
+SADD dzial:1:zajecia "granie w piłkarzyki"
+SADD dzial:2:zajecia "programowanie"
+SADD dzial:2:zajecia "szukanie nowych technologii"
+SADD dzial:2:zajecia "badania"
+SADD dzial:2:zajecia "rozwiązywanie problemów"
+SADD dzial:2:zajecia "granie w piłkarzyki"
+SADD dzial:3:zajecia "księgowanie"
+SADD dzial:3:zajecia "rozliczanie"
+SADD dzial:3:zajecia "wypłaty"
+SADD dzial:3:zajecia "fakturowanie"
+SADD dzial:3:zajecia "granie w piłkarzyki"
+SADD dzial:4:zajecia "programowanie"
+SADD dzial:4:zajecia "code review"
+SADD dzial:4:zajecia "granie w piłkarzyki"
+SADD dzial:5:zajecia "zapobieganie powstawaniu problemów"
+SADD dzial:5:zajecia "rozwiązywanie problemów"
+SADD dzial:5:zajecia "granie w piłkarzyki"
+SADD dzial:5:zajecia "sprzątanie"
+echo"PENSJE - ZBIORY POSORTOWANE"
+ZADD pensje 9000 "Architekt systemów"
+ZADD pensje 3000 "programista JUNIOR"
+ZADD pensje 15000 "Prezes"
+ZADD pensje 2000 "dozorca"
+ZADD pensje 5000 "programista MIDDLE"
+ZADD pensje 7000 "programista SENIOR"
+ZADD pensje 1500 "sprzątacz"
+ZADD pensje 4500 "ksiegowy"
+ZADD pensje 7500 "starszy ksiegowy"
+ZADD pensje 6400 "specjalista kadr i płac"
+ZADD pensje 2300 "Zaopatrzeniowiec"
