@@ -1,4 +1,4 @@
-echo "POLECENIE: cat baza.rds | redis-cli -n 1 -h m89.eu -p 6379"
+echo "POLECENIE: cat baza.rds | redis-cli -n 3 -h m89.eu -p 6379"
 AUTH c005ec7b2d76a81430db3057472fd83bafc0d7f9ec0103a22a42d0a3eec3b81d
 echo "IMIONA - STRING"
 SET pracownik:1:imie Adam
