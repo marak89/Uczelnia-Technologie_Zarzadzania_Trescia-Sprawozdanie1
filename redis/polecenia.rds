@@ -1,0 +1,19 @@
+echo "OPERACJE NA STRING"
+AUTH c005ec7b2d76a81430db3057472fd83bafc0d7f9ec0103a22a42d0a3eec3b81d
+echo "Dodanie drugiego imienia - APPEND"
+APPEND pracownik:1:imie " Zenon"
+
+echo "dodanie ilosci dni urlopu - SETNX"
+SETNX pracownik:1:urlop 20
+
+echo "zwiekszenie urlopu pracownikowi do 26 dni - INCRBY"
+INCRBY pracownik:1:urlop 6
+
+echo "zmniejszenie pracownikowi dni urlopowych - DECRBY"
+DECRBY pracownik:1:urlop 10
+
+echo "dlugosc nazwiska pracownika o id 1"
+STRLEN pracownik:1:nazwisko
+
+echo "OPERACJE NA LISTACH"
+
