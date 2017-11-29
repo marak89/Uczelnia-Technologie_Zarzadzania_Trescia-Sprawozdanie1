@@ -1,19 +1,102 @@
 echo "OPERACJE NA STRING"
 AUTH c005ec7b2d76a81430db3057472fd83bafc0d7f9ec0103a22a42d0a3eec3b81d
-echo "Dodanie drugiego imienia - APPEND"
+
+echo "1) Dodanie drugiego imienia - APPEND"
 APPEND pracownik:1:imie " Zenon"
 
-echo "dodanie ilosci dni urlopu - SETNX"
+echo "2) dodanie ilosci dni urlopu - SETNX"
 SETNX pracownik:1:urlop 20
 
-echo "zwiekszenie urlopu pracownikowi do 26 dni - INCRBY"
+echo "3) zwiekszenie urlopu pracownikowi do 26 dni - INCRBY"
 INCRBY pracownik:1:urlop 6
 
-echo "zmniejszenie pracownikowi dni urlopowych - DECRBY"
+echo "4) zmniejszenie pracownikowi dni urlopowych - DECRBY"
 DECRBY pracownik:1:urlop 10
 
-echo "dlugosc nazwiska pracownika o id 1"
+echo "5) dlugosc nazwiska pracownika o id 1"
 STRLEN pracownik:1:nazwisko
 
 echo "OPERACJE NA LISTACH"
+
+echo "1) Wypisujemy w jakich godzinach pracuje dzial 1"
+LRANGE dzial:1:godziny 0 -1
+
+echo "2) Usuwamy dokladnie jeden wpis o wartosci 10:00  "
+LREM dzial:1:godziny 0 10:00
+
+echo "3) dodajemy nowa godzine rozpoczecia pracy"
+LPUSH dzial:1:godziny 09:00
+
+echo "4) jednak dzial prezesow nie chce konczyc o 13. Chce oddac te godzine zakonczenia dzalowi R&D "
+RPOPLPUSH dzial:1:godziny dzial:2:godziny
+
+echo "5) Uwuwamy dzialowu R&D poprzednia godzine wyjscia z pracy"
+LREM dzial:2:godziny 0 16:00
+
+echo "6) odwracamy kolejnosc godzin"
+RPOPLPUSH dzial:2:godziny dzial:2:godziny
+
+echo "7) ustawiamy dla dzialu 1 godziny wyjscia na 12:00"
+RPUSHX dzial:1:godziny 12:00
+
+echo "OPERACJE NA ZBIORACH"
+
+echo "1) Zajecia wspolne dla dzialow. Zobaczymy co robia wszyscy razem. "
+SINTERSTORE wspolnezajecia dzial:1:zajecia dzial:2:zajecia dzial:3:zajecia dzial:4:zajecia dzial:5:zajecia 
+
+
+echo "2) Jakie zajecia ma dzial 1"
+SMEMBERS dzial:1:zajecia
+
+echo "3a) co robi dzial 2, czego nie robi dzial 4"
+SDIFF dzial:2:zajecia dzial:4:zajecia
+echo "3b) co robi dzial 4, czego nie robi dzial 2 - kolejnosc ma znaczenie"
+SDIFF dzial:4:zajecia dzial:4:zajecia
+
+echo "4) Zobaczmy co robi cala firma"
+SUNIONSTORE wszystkiezajecia dzial:1:zajecia dzial:2:zajecia dzial:3:zajecia dzial:4:zajecia dzial:5:zajecia
+
+echo "5) Najwazniejsze zajecie na dzis"
+SRANDMEMBER wszystkiezajecia
+
+
+echo "Operacje na zbiorach posortowanych"
+
+echo "1) Ile rodzajow pensji"
+ZCARD pensje
+
+echo "2) Pensje z przedzialu 1000 - 2000"
+ZCOUNT pensje 1000 2000
+
+echo "3) A jaka pensje ma prezes"
+ZSCORE pensje prezes
+
+echo "4) Wszystkie pensje pomiedzy 2000 a 5000 (bez wartosci brzegowych)"
+ZRANGEBYSCORE pensje (2000 (5000 WITHSCORES
+
+echo "5) Lista plac w kolejnosci on najwiekszej"
+ZREVRANGE pensje 0 -1 WITHSCORES
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
