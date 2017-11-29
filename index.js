@@ -2,7 +2,7 @@ var express = require('express');
 var app = express();
 
 var Redis = require('ioredis');
-var redis6 = new Redis({
+var redis = new Redis({
     port: 6379, // Redis port
     host: 'm89.eu', // Redis host
     family: 4, // 4 (IPv4) or 6 (IPv6)
@@ -48,7 +48,7 @@ app.get('/osoba', function (req, res) {
 
 
 app.get('/napis', function (req, res) {
-    redis6.get('napis', function (err, result) {
+    redis.get('pracownik:1:imie', function (err, result) {
         res.send(result);
     });
 });
