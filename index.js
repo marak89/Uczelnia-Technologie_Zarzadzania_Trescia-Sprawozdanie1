@@ -34,6 +34,7 @@ var html_HEAD = `
 <a class="btn btn-primary" href="/">Home</a>
     <a class="btn btn-primary" href="/pracownicy">Pracownicy</a>
     <a class="btn btn-primary" href="/dodajPracownika">Dodaj pracownika</a>
+    <a class="btn btn-primary" href="/szukajPracownika">Szukaj pracownika</a>
 <br />
 `;
 
@@ -45,6 +46,100 @@ var html_FOOT = `
 </body>
 </html>
 `;
+
+
+app.get('/szukajPracownika', function (req, res) {
+    var pageContent = '';
+    var sz = req.query.szukaj;
+    if(sz){
+    
+        pageContent += `<h3>Szukam ${sz}</h3>`;
+    var pracownicy = [];
+    var dane = "";
+    var pipeline = redis.pipeline();
+    var tmp = 1;
+    redis.keys('pracownik:*', function (err, keys) {
+        for (var i = 0; i < keys.length; i++) {
+            pipeline.get(keys[i]);
+            pracownicy[keys[i]] = [];
+        }
+
+        pipeline.exec(function (err, result) {
+            var cnt = 0;
+            for (prop in pracownicy) {
+                pracownicy[prop] = result[cnt][1];
+                cnt++;
+            }
+
+            var tablicaPracownicy = [];
+            for (prop in pracownicy) {
+                tmp = prop.split(':');
+                if (!Array.isArray(tablicaPracownicy[tmp[1]])) {
+                    tablicaPracownicy[tmp[1]] = [];
+                    tablicaPracownicy[tmp[1]]['id'] = tmp[1];
+                    tablicaPracownicy[tmp[1]]['found'] = false;
+                }
+                tablicaPracownicy[tmp[1]][tmp[2]] = pracownicy[prop];
+                if(pracownicy[prop] == sz){
+                    tablicaPracownicy[tmp[1]]['found'] = true;
+                }
+            }
+            console.log(tablicaPracownicy);
+            var pageContent = '<h3>Lista pracowników</h3>';
+            pageContent += `<table class="table table-hover table-bordered ">
+<thead>
+<tr>
+<th>id</th>
+<th>Imię</th>
+<th>Nazwisko</th>
+<th>Adres</th>
+<th>Miejscowość</th>
+</tr>
+            <tbody>
+`;
+            for (var i = 1; i < tablicaPracownicy.length; i++) {
+                if(tablicaPracownicy[i]['found'] == true){
+                pageContent += `<tr>
+<td>${tablicaPracownicy[i]['id']}</td>
+<td>${tablicaPracownicy[i]['imie']}</td>
+<td>${tablicaPracownicy[i]['nazwisko']}</td>
+<td>${tablicaPracownicy[i]['adres']}</td>
+<td>${tablicaPracownicy[i]['miejscowosc']}</td>
+`;
+                    }
+            }
+
+            pageContent += '</tbody></table>';
+            
+            console.log(pageContent);
+            var html_content = '';
+            html_content += html_HEAD;
+            html_content += pageContent;
+            html_content += html_FOOT;
+            res.send(html_content);
+        });
+    });
+        
+        
+    } else {
+    pageContent += `
+    <br /><br />
+<form method="GET" class="" >
+    <label>Szukaj pracownika</labe>
+<input class="form-control" type="text" name="szukaj"  placeholder="Imię | Nazwisko | Adres | Miejscowosc" id="szukajPracownika" /><br />
+    <input class="btn btn-primary" type="submit" value="Szukaj" />
+</form>
+        <p>Działa na zasadzie prostego porównania ciągów znaków</p>
+`;
+ var html_content = '';
+    html_content += html_HEAD;
+    html_content += pageContent;
+    html_content += html_FOOT;
+
+    res.send(html_content);
+    }
+   
+});
 
 app.get('/', function (req, res) {
     var pageContent = `
@@ -156,10 +251,6 @@ app.get('/napis', function (req, res) {
     });
 });
 
-app.post('/dodajPracownika', function (req, res) {
-    
-});
-
 
 app.get('/dodajPracownika', function (req, res) {
       var pageContent = `<h2>Dodaj pracownika</h2>
@@ -187,9 +278,4 @@ app.get('/dodajPracownika', function (req, res) {
       res.send(html_content);
 });
 
-
-
-
-
 app.listen(3000);
-
