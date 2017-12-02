@@ -1,5 +1,9 @@
 var express = require('express');
 var app = express();
+var bodyParser = require('body-parser');
+
+var urlencodedParser = bodyParser.urlencoded({ extended: false }) // application/x-www-form-urlencoded
+app.use(express.static('public'));
 
 var Redis = require('ioredis');
 var redis = new Redis({
@@ -29,7 +33,7 @@ var html_HEAD = `
     <p>Wybierz interesujący cię dział.</p>
 <a class="btn btn-primary" href="/">Home</a>
     <a class="btn btn-primary" href="/pracownicy">Pracownicy</a>
-    <a class="btn btn-primary" href="/dzialy">Dzialy</a>
+    <a class="btn btn-primary" href="/dodajPracownika">Dodaj pracownika</a>
 <br />
 `;
 
@@ -56,9 +60,34 @@ Firma XYZ zajmuje się ...
     res.send(html_content);
 });
 
-app.post('/', function (req, res) {
-    res.send('Hello POST')
-})
+app.post('/dodajPracownika', urlencodedParser, function (req, res) {
+response = {
+imie:req.body.inImie,
+nazwisko:req.body.inNazwisko,
+adres:req.body.inAdres,
+miejscowosc:req.body.inMiejscowosc,
+};
+//console.log(response);
+
+redis.keys('pracownik:*:imie', function (err, keys) {
+    if(err){console.log(err)};
+var idPracownika = keys.length+1;
+redis.set('pracownik:'+idPracownika+':imie',response.imie);
+redis.set('pracownik:'+idPracownika+':nazwisko',response.nazwisko);
+redis.set('pracownik:'+idPracownika+':adres',response.adres);
+redis.set('pracownik:'+idPracownika+':miejscowosc',response.miejscowosc);
+
+var pageContent = '<br></br>';
+pageContent += `<h4>Dodałem ${response.imie} ${response.nazwisko}</h4>
+<p>${response.adres} ${response.miejscowosc}</p>
+`;
+var html_content = '';
+html_content += html_HEAD;
+html_content += pageContent;
+html_content += html_FOOT;
+res.send(html_content);    
+});
+});
 
 app.get('/pracownicy', function (req, res) {
     var pracownicy = [];
@@ -126,6 +155,40 @@ app.get('/napis', function (req, res) {
         res.send(result);
     });
 });
+
+app.post('/dodajPracownika', function (req, res) {
+    
+});
+
+
+app.get('/dodajPracownika', function (req, res) {
+      var pageContent = `<h2>Dodaj pracownika</h2>
+<form method="POST">
+    <div class="form-group">
+    <label for="inImie">Imię</label>
+   <input class="form-control" type="text" id="inImie" name="inImie" placeholder="Imię" />
+    
+<label for="inNazwisko">Nazwisko</label>
+   <input class="form-control" type="text" name="inNazwisko" id="inNazwisko" placeholder="Nazwisko" />
+
+    <label for="inAdres">Adres</label>
+   <input class="form-control" type="text" name="inAdres" id="inAdres" placeholder="Adres" />
+
+    <label for="inMiejscowosc">Miejscowość</label>
+   <input class="form-control" type="text" id="inMiejscowosc" name="inMiejscowosc" placeholder="Miejscowość" />
+    </div>
+    <input type="submit" value="Dodaj" class="btn btn-primary" />
+</form>
+`;
+      var html_content = '';
+      html_content += html_HEAD;
+      html_content += pageContent;
+      html_content += html_FOOT;
+      res.send(html_content);
+});
+
+
+
 
 
 app.listen(3000);

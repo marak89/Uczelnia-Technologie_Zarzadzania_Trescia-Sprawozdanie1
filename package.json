@@ -16,6 +16,7 @@
     "url": "https://github.com/marak89/Uczelnia-Technologie_Zarzadzania_Trescia-Sprawozdanie1/issues"
   },
   "dependencies": {
+    "body-parser": "^1.18.2",
     "express": "^4.16.2",
     "ioredis": "^3.2.1"
   },
